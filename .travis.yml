@@ -1,0 +1,10 @@
+language: csharp
+mono: none
+dotnet: 2.1
+
+install:
+  - dotnet restore src/
+
+script:
+  - dotnet build -c Release src/
+  - dotnet test src/Idfy.MockServer.Tests/Idfy.MockServer.Tests.csproj
