@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idfy.MockServer", "Idfy.MockServer\Idfy.MockServer.csproj", "{7B7C80A2-0DBD-4A9F-805E-5E1AEBC18A5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idfy.MockServer.Tests", "Idfy.MockServer.Tests\Idfy.MockServer.Tests.csproj", "{AD3B301C-1A81-4861-91FB-CB7F659FB143}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B7C80A2-0DBD-4A9F-805E-5E1AEBC18A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B7C80A2-0DBD-4A9F-805E-5E1AEBC18A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B7C80A2-0DBD-4A9F-805E-5E1AEBC18A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B7C80A2-0DBD-4A9F-805E-5E1AEBC18A5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD3B301C-1A81-4861-91FB-CB7F659FB143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD3B301C-1A81-4861-91FB-CB7F659FB143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD3B301C-1A81-4861-91FB-CB7F659FB143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD3B301C-1A81-4861-91FB-CB7F659FB143}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
