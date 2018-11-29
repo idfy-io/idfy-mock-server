@@ -89,7 +89,7 @@ namespace Idfy.MockServer
                 }
                 
                 // If no inline example is found, try to get a referenced definition with example response.
-                var schemaRef = response.schema.@ref;
+                var schemaRef = response.schema?.@ref;
                 if (schemaRef != null)
                 {
                     var modelName = schemaRef.Replace("#/definitions/", "");
@@ -107,6 +107,8 @@ namespace Idfy.MockServer
                         return mockResponse;
                     }
                 }
+
+                return mockResponse;
             }
 
             // We'll return 404 if we can't find any success responses for the given operation.
