@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 
@@ -26,21 +27,29 @@ namespace Idfy.MockServer
         {
             PathItem pathItem = null;
             
-            // Try to match the request path with a Swagger path
-            foreach (var path in swaggerDocument.paths)
+            // First try to match the exact path
+            var exactPath = swaggerDocument.paths.FirstOrDefault(x => x.Key.Equals(request.Path));
+            if (exactPath.Value != null)
             {
-                try
+                pathItem = exactPath.Value;
+            }
+            else
+            {
+                // When there is no exact match, use RouteMatcher to find matching path
+                foreach (var path in swaggerDocument.paths)
                 {
-                    if (RouteMatcher.Match(path.Key, request.Path, request.Query))
+                    try
                     {
+                        if (!RouteMatcher.Match(path.Key, request.Path, request.Query)) continue;
+                        
                         pathItem = path.Value;
                         break;
                     }
-                }
-                // The Swagger document might contain invalid paths that the RouteMatcher can't process, so we ignore those errors.
-                catch (ArgumentException)
-                {
-                }
+                    // The Swagger document might contain invalid paths that the RouteMatcher can't process, so we ignore those errors.
+                    catch (ArgumentException)
+                    {
+                    }
+                }   
             }
             
             if (pathItem == null) return null;
@@ -90,25 +99,24 @@ namespace Idfy.MockServer
                 
                 // If no inline example is found, try to get a referenced definition with example response.
                 var schemaRef = response.schema?.@ref;
-                if (schemaRef != null)
+                if (schemaRef == null) return mockResponse;
+                
+                var modelName = schemaRef.Replace("#/definitions/", "");
+                
+                if (!swaggerDocument.definitions.TryGetValue(modelName, out var definition))
+                    return mockResponse;
+                
+                if (definition.example != null)
                 {
-                    var modelName = schemaRef.Replace("#/definitions/", "");
-                    if (swaggerDocument.definitions.TryGetValue(modelName, out var definition))
-                    {
-                        if (definition.example != null)
-                        {
-                            mockResponse.ResponseBody = definition.example;
-                            return mockResponse;
-                        }
-
-                        // When we have a definition with no example response, the last resort is to create an object where
-                        // all properties are set to the types' default value.
-                        mockResponse.ResponseBody = CreateDefaultResponseObject(definition);
-                        return mockResponse;
-                    }
+                    mockResponse.ResponseBody = definition.example;
+                    return mockResponse;
                 }
 
+                // When we have a definition with no example response, the last resort is to create an object where
+                // all properties are set to the types' default value.
+                mockResponse.ResponseBody = CreateDefaultResponseObject(definition);
                 return mockResponse;
+
             }
 
             // We'll return 404 if we can't find any success responses for the given operation.
