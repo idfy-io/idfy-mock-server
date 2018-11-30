@@ -16,4 +16,10 @@
     <ProjectReference Include="..\Idfy.MockServer\Idfy.MockServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="resources\idfy-swagger.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
