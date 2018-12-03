@@ -58,7 +58,7 @@ namespace Idfy.MockServer.Tests
             // Sometimes, the request path will match multiple paths in our Swagger definition.
             // For example, the request path "/documents/summary" matches both the "/documents/summary"
             // and "/documents/{documentId}" paths (we don't have type constraints on path params, so "summary" could technically be
-            // a document ID. Therefore we should exact matches must have priority over paths with params.
+            // a document ID. Therefore exact matches must have priority over paths with params.
             var request = MockRequest("/signature/documents/summary", "GET");
             var mockResponse = MockGenerator.Generate(request, _swaggerDocument);
             

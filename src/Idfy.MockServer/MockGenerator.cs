@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
@@ -97,30 +98,51 @@ namespace Idfy.MockServer
                     }
                 }
                 
-                // If no inline example is found, try to get a referenced definition with example response.
-                var schemaRef = response.schema?.@ref;
-                if (schemaRef == null) return mockResponse;
-                
-                var modelName = schemaRef.Replace("#/definitions/", "");
-                
-                if (!swaggerDocument.definitions.TryGetValue(modelName, out var definition))
-                    return mockResponse;
-                
-                if (definition.example != null)
+                if (response.schema == null) return null;
+
+                // If no inline example is found, try to find a referenced definition
+                if (response.schema.@ref != null)
                 {
-                    mockResponse.ResponseBody = definition.example;
-                    return mockResponse;
+                    mockResponse.ResponseBody = CreateResponseFromRef(response.schema.@ref, swaggerDocument);
+                }
+                
+                // Operations that return a list of objects will instead have an "items" property with the ref
+                else if (response.schema.items?.@ref != null)
+                {
+                    mockResponse.ResponseBody = new List<object>()
+                    {
+                        CreateResponseFromRef(response.schema.items.@ref, swaggerDocument)
+                    };
+                }
+                
+                // Enums can also be used to define a list of possible string values
+                else if (response.schema.items?.@enum != null)
+                {
+                    mockResponse.ResponseBody = response.schema.items.@enum;
                 }
 
-                // When we have a definition with no example response, the last resort is to create an object where
-                // all properties are set to the types' default value.
-                mockResponse.ResponseBody = CreateDefaultResponseObject(definition);
                 return mockResponse;
-
             }
 
             // We'll return 404 if we can't find any success responses for the given operation.
             return NotFound();
+        }
+
+        private static object CreateResponseFromRef(string @ref, SwaggerDocument swaggerDocument)
+        {
+            var modelName = @ref.Replace("#/definitions/", "");
+
+            if (!swaggerDocument.definitions.TryGetValue(modelName, out var definition))
+                return null;
+                
+            if (definition.example != null)
+            {
+                return definition.example;
+            }
+
+            // When we have a definition with no example response, the last resort is to create an object where
+            // all properties are set to the types' default value.
+            return CreateDefaultResponseObject(definition);
         }
 
         private static object CreateDefaultResponseObject(Schema definition)
