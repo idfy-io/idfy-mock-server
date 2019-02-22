@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <Description>A mock server simulating the behavior of the Idfy API.</Description>
     <Authors>Idfy Norge AS</Authors>
   </PropertyGroup>
