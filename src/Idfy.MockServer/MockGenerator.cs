@@ -98,7 +98,7 @@ namespace Idfy.MockServer
                     }
                 }
                 
-                if (response.schema == null) return null;
+                if (response.schema == null) return mockResponse;
 
                 // If no inline example is found, try to find a referenced definition
                 if (response.schema.@ref != null)
