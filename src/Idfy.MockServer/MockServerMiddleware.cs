@@ -70,7 +70,7 @@ namespace Idfy.MockServer
             using (var client = new HttpClient())
             {
                 var url = Environment.GetEnvironmentVariable("IDFY_SWAGGER_URL") ??
-                          "https://idfyapimanagement.blob.core.windows.net/swagger-test/swagger.json";
+                          "https://idfyapimanagement.blob.core.windows.net/swagger-prod/swagger.json";
 
                 HttpResponseMessage response;
 
