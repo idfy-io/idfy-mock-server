@@ -156,7 +156,10 @@ namespace Idfy.MockServer
                 switch (prop.Value.type)
                 {
                     case "string":
-                        value = "string";
+                        var dateFormats = new[] { "date-time", "date" };
+                        value = dateFormats.Contains(prop.Value.format)
+                            ? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
+                            : "string";
                         break;
                     case "number":
                     case "integer":
