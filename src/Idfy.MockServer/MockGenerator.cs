@@ -147,48 +147,47 @@ namespace Idfy.MockServer
 
         private static object CreateDefaultResponseObject(Schema definition)
         {
-            var jObj = new JObject();
-            foreach (var prop in definition.properties)
+            if (definition.properties != null)
             {
-                JToken value = null;
+                var jObj = new JObject();
                 
-                // Set the value based on the property type. This checks for all the supported OpenAPI data types.
-                switch (prop.Value.type)
+                foreach (var prop in definition.properties)
                 {
-                    case "string":
-                        var dateFormats = new[] { "date-time", "date" };
-                        value = dateFormats.Contains(prop.Value.format)
-                            ? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
-                            : "string";
-                        break;
-                    case "number":
-                    case "integer":
-                        value = 0;
-                        break;
-                    case "boolean":
-                        value = true;
-                        break;
-                    case "array":
-                        value = new JArray();
-                        break;
-                    case "object":
-                        value = null;
-                        break;
-                }
+                    JToken value = null;
                 
-                jObj.Add(prop.Key, value);
+                    // Set the value based on the property type. This checks for all the supported OpenAPI data types.
+                    switch (prop.Value.type)
+                    {
+                        case "string":
+                            var dateFormats = new[] { "date-time", "date" };
+                            value = dateFormats.Contains(prop.Value.format)
+                                ? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
+                                : "string";
+                            break;
+                        case "number":
+                        case "integer":
+                            value = 0;
+                            break;
+                        case "boolean":
+                            value = true;
+                            break;
+                        case "array":
+                            value = new JArray();
+                            break;
+                        case "object":
+                            value = null;
+                            break;
+                    }
+                
+                    jObj.Add(prop.Key, value);
+                }
+
+                return jObj.ToObject<object>();   
             }
 
-            return jObj.ToObject<object>();
+            return definition.@enum?.FirstOrDefault();
         }
 
         private static MockResponse NotFound() => new MockResponse() { StatusCode = 404 };
-    }
-
-    public class MockResponse
-    {
-        public int StatusCode { get; set; }
-        
-        public object ResponseBody { get; set; }
     }
 }
