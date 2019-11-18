@@ -173,11 +173,11 @@ namespace Idfy.MockServer
 
         public int? multipleOf;
 
-        public int? maximum;
+        public decimal? maximum;
 
         public bool? exclusiveMaximum;
 
-        public int? minimum;
+        public decimal? minimum;
 
         public bool? exclusiveMinimum;
 
@@ -236,11 +236,11 @@ namespace Idfy.MockServer
 
         public object @default;
 
-        public int? maximum;
+        public decimal? maximum;
 
         public bool? exclusiveMaximum;
 
-        public int? minimum;
+        public decimal? minimum;
 
         public bool? exclusiveMinimum;
 
