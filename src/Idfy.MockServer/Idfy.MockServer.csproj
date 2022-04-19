@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>0.0.8</Version>
+    <Version>0.0.9</Version>
     <Description>A mock server simulating the behavior of the Idfy API.</Description>
     <Authors>Idfy Norge AS</Authors>
   </PropertyGroup>
