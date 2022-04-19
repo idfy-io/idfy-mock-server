@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -70,14 +66,15 @@ namespace Idfy.MockServer.Tests
             Assert.IsNotEmpty(jObj["data"].Value<IEnumerable<object>>());
         }
 
-        public HttpRequest MockRequest(string path, string method)
+        private HttpRequest MockRequest(string path, string method)
         {
             var context = new DefaultHttpContext();
-            return new DefaultHttpRequest(context)
-            {
-                Path = new PathString(path),
-                Method = method
-            };
+            var request = context.Request;
+
+            request.Path = new PathString(path);
+            request.Method = method;
+
+            return request;
         } 
     }
 }

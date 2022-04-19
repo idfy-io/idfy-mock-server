@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.Internal;
+﻿using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
 
 namespace Idfy.MockServer.Tests
